@@ -1,4 +1,4 @@
-CREATE TABLE shop.sales
+CREATE TABLE IF NOT EXISTS shop.sales
 (
     sales_id    integer     NOT NULL,
     dt          timestamptz NOT NULL,

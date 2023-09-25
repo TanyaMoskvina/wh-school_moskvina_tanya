@@ -1,4 +1,4 @@
-CREATE TABLE shop.client
+CREATE TABLE IF NOT EXISTS shop.client
 (
     client_id   integer     NOT NULL,
     name        varchar(30) NOT NULL,

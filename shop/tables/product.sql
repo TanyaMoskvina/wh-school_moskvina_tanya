@@ -1,4 +1,4 @@
-CREATE TABLE shop.product
+CREATE TABLE IF NOT EXISTS shop.product
 (
     product_id  integer        NOT NULL,
     name        varchar(30)    NOT NULL,
