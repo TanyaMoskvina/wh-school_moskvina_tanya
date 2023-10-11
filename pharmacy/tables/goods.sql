@@ -1,8 +1,12 @@
 CREATE TABLE IF NOT EXISTS pharmacy.goods
 (
-    nm_id           BIGINT   NOT NULL
+    nm_id           BIGINT       NOT NULL
         CONSTRAINT pk_goods PRIMARY KEY,
-    category_id     SMALLINT NOT NULL,
-    release_form_id SMALLINT NOT NULL,
-    manufacturer_id INT      NOT NULL
+    name            VARCHAR(256) NOT NULL,
+    by_prescription BOOLEAN      NOT NULL,
+    dosage          VARCHAR(16)  NULL,
+    count_in_pack   SMALLINT     NOT NULL,
+    release_form_id SMALLINT     NOT NULL,
+    category_id     SMALLINT     NOT NULL,
+    manufacturer_id INT          NOT NULL
 )
