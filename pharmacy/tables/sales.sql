@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS pharmacy.sales
     status                  CHAR(3)     NOT NULL,
     dt                      TIMESTAMPTZ NOT NULL,
     responsible_employee_id BIGINT      NOT NULL,
-    employee_id             BIGINT      NOT NULL,
+    ch_employee_id          BIGINT      NOT NULL,
     ch_dt                   TIMESTAMPTZ NOT NULL
 );
