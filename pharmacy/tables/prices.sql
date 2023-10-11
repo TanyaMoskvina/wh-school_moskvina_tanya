@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS pharmacy.prices
     price          NUMERIC(10, 2) NOT NULL,
     ch_dt          TIMESTAMPTZ    NOT NULL,
     ch_employee_id BIGINT         NOT NULL
-)
+);

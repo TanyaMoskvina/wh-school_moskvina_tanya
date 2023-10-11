@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS humanresource.clients
     name           VARCHAR(64) NOT NULL,
     birth_date     DATE        NULL,
     ch_employee_id BIGINT      NOT NULL,
-    ch_dt          TIMESTAMPTZ NOT NULL
-)
+    ch_dt          TIMESTAMPTZ NOT NULL,
+    CONSTRAINT uq_client_phone UNIQUE (phone)
+);

@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS humanresource.employees
     rank_id        SMALLINT    NOT NULL,
     is_deleted     BOOLEAN     NOT NULL,
     ch_employee_id BIGINT      NOT NULL,
-    ch_dt          TIMESTAMPTZ NOT NULL
-)
+    ch_dt          TIMESTAMPTZ NOT NULL,
+    CONSTRAINT uq_employees_phone UNIQUE (phone)
+);

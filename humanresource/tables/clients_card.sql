@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS humanresource.clients_card
         CONSTRAINT pk_clients_card PRIMARY KEY,
     client_id BIGINT   NOT NULL,
     level_id  SMALLINT NOT NULL
-)
+);

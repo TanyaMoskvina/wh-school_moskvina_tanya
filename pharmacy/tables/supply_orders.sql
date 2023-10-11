@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS pharmacy.supply_orders
     order_info              JSONB       NOT NULL,
     responsible_employee_id BIGINT      NOT NULL,
     dt                      TIMESTAMPTZ NOT NULL
-)
+);

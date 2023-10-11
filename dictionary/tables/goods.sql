@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS pharmacy.goods
+CREATE TABLE IF NOT EXISTS dictionary.goods
 (
     nm_id           BIGINT       NOT NULL
         CONSTRAINT pk_goods PRIMARY KEY,
@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS pharmacy.goods
     release_form_id SMALLINT     NOT NULL,
     category_id     SMALLINT     NOT NULL,
     manufacturer_id INT          NOT NULL
-)
+);

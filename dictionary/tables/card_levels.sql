@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS dictionary.card_levels
         CONSTRAINT pk_card_levels PRIMARY KEY,
     discount     SMALLINT      NOT NULL,
     amount_spent NUMERIC(8, 2) NOT NULL
-)
+);
