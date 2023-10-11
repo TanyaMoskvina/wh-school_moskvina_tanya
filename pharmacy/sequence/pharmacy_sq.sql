@@ -1,0 +1,1 @@
+CREATE SEQUENCE IF NOT EXISTS pharmacy.pharmacy_sq AS BIGINT;
