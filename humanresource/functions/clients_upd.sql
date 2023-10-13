@@ -17,9 +17,9 @@ BEGIN
            s.name,
            s.birth_date
     INTO _client_id, _phone, _name, _birth_date
-    FROM JSONB_TO_RECORD(_src) AS s (client_id BIGINT,
-                                     phone VARCHAR(11),
-                                     name VARCHAR(64),
+    FROM JSONB_TO_RECORD(_src) AS s (client_id  BIGINT,
+                                     phone      VARCHAR(11),
+                                     name       VARCHAR(64),
                                      birth_date DATE)
              LEFT JOIN humanresource.clients c
                        ON c.client_id = s.client_id;
