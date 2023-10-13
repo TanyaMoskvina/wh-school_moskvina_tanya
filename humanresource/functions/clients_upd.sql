@@ -38,11 +38,11 @@ BEGIN
                    _ch_employee_id AS ch_employee_id,
                    _dt             AS dt
             ON CONFLICT (client_id) DO UPDATE
-                SET phone = excluded.phone,
-                    name = excluded.name,
-                    birth_date = excluded.birth_date,
+                SET phone          = excluded.phone,
+                    name           = excluded.name,
+                    birth_date     = excluded.birth_date,
                     ch_employee_id = excluded.ch_employee_id,
-                    ch_dt = excluded.ch_dt
+                    ch_dt          = excluded.ch_dt
             RETURNING c.*)
 
        , ins_crd AS (
@@ -58,29 +58,14 @@ BEGIN
                    ic.ch_dt
             FROM ins_cte ic
                      LEFT JOIN humanresource.clients_card cc ON ic.client_id = cc.client_id
-            WHERE cc.card_id IS NULL
-            RETURNING ccr.*)
+            WHERE cc.card_id IS NULL)
 
-       , ins_crh AS (
-        INSERT INTO history.clients_card_changes AS crh (card_id,
-                                                         client_id,
-                                                         level_id,
-                                                         ch_employee_id,
-                                                         ch_dt)
-            SELECT icr.card_id,
-                   icr.client_id,
-                   icr.level_id,
-                   icr.ch_employee_id,
-                   icr.ch_dt
-            FROM ins_crd icr)
-
-    INSERT
-    INTO history.clients_changes AS cch (client_id,
-                                         phone,
-                                         name,
-                                         birth_date,
-                                         ch_employee_id,
-                                         ch_dt)
+    INSERT INTO history.clients_changes AS cch (client_id,
+                                                phone,
+                                                name,
+                                                birth_date,
+                                                ch_employee_id,
+                                                ch_dt)
     SELECT ic.client_id,
            ic.phone,
            ic.name,
@@ -88,7 +73,6 @@ BEGIN
            ic.ch_employee_id,
            ic.ch_dt
     FROM ins_cte ic;
-
 
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END
