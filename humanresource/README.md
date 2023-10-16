@@ -39,21 +39,11 @@ SELECT humanresource.client_get_info('89997776533');
       "name": "Алексей ",
       "phone": "89997776533",
       "card_id": 5,
-      "discount": "1%",
+      "discount": 1,
+      "level_id": 1,
       "birth_date": "1999-08-07"
     }
   ]
 }
 ```
-Пример ошибки:
-```jsonb
-{
-  "errors": [
-    {
-      "error": "humanresource.client_get_info.not_exists",
-      "detail": "phone = 12345678998",
-      "message": "Пользователь с таким номером телефона не зарегестрирован"
-    }
-  ]
-}
-```
+Если результат вывода: `{"data" : null}` - клиента нет.
