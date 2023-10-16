@@ -26,3 +26,34 @@ SELECT humanresource.clients_upd(_src := '
 ```jsonb
 {"data" : null}
 ```
+
+### Получение информации о пользователе по номеру телефона
+```sql
+SELECT humanresource.client_get_info('89997776533');
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{
+  "data": [
+    {
+      "name": "Алексей ",
+      "phone": "89997776533",
+      "card_id": 5,
+      "discount": "1%",
+      "birth_date": "1999-08-07"
+    }
+  ]
+}
+```
+Пример ошибки:
+```jsonb
+{
+  "errors": [
+    {
+      "error": "humanresource.client_get_info.not_exists",
+      "detail": "phone = 12345678998",
+      "message": "Пользователь с таким номером телефона не зарегестрирован"
+    }
+  ]
+}
+```
