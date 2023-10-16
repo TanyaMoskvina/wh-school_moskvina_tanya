@@ -18,7 +18,7 @@ BEGIN
            s.name,
            s.birth_date,
            s.rank_id,
-           COALESCE(s.is_deleted, FALSE) AS is_deleted
+           s.is_deleted
     INTO _employee_id, _phone, _name, _birth_date, _rank_id, _is_deleted
     FROM JSONB_TO_RECORD(_src) AS s (employee_id BIGINT,
                                      phone       VARCHAR(11),
