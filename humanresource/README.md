@@ -28,7 +28,7 @@ SELECT humanresource.clients_upd(_src := '
 ```
 
 
-### Добавление, обновление, удаление сотрудника
+### Добавление и обновление сотрудника
 ```sql
 SELECT humanresource.employees_upd('{
                                       "employee_id": 10,
@@ -42,7 +42,7 @@ SELECT humanresource.employees_upd('{
 ```
 При вводе существующего `employee_id` запись о сотруднике обновится.  
 При `employee_id` NULL добавится новый сотрудник.  
-Если нужно удалить запись о сотруднике -  `"is_deleted": true`, в дргуих случаях `is_deleted` можно вобще не указывать.
+Уволенный сотрудник -  `"is_deleted": true`, в дргуих случаях `is_deleted` можно вобще не указывать.
 
 Пример ответа при правильном выполнении:
 ```jsonb

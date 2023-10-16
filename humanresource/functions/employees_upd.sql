@@ -18,7 +18,7 @@ BEGIN
            s.name,
            s.birth_date,
            s.rank_id,
-           s.is_deleted
+           COALESCE(s.is_deleted, FALSE) AS is_deleted
     INTO _employee_id, _phone, _name, _birth_date, _rank_id, _is_deleted
     FROM JSONB_TO_RECORD(_src) AS s (employee_id BIGINT,
                                      phone       VARCHAR(11),
@@ -29,22 +29,13 @@ BEGIN
              LEFT JOIN humanresource.employees e
                        ON e.employee_id = s.employee_id;
 
-    IF _is_deleted = TRUE
-    THEN
-        DELETE
-        FROM humanresource.employees e
-        WHERE e.employee_id = _employee_id
-          AND _is_deleted = TRUE;
-
-        RETURN jsonb_build_object('data', NULL);
-    END IF;
-
     WITH ins_cte AS (
         INSERT INTO humanresource.employees AS e (employee_id,
                                                   phone,
                                                   name,
                                                   birth_date,
                                                   rank_id,
+                                                  is_deleted,
                                                   ch_employee_id,
                                                   ch_dt)
             SELECT _employee_id    AS employee_id,
@@ -52,6 +43,7 @@ BEGIN
                    _name           AS name,
                    _birth_date     AS birth_date,
                    _rank_id        AS rank_id,
+                   _is_deleted     AS is_deleted,
                    _ch_employee_id AS ch_employee_id,
                    _dt             AS ch_dt
             ON CONFLICT (employee_id) DO UPDATE
@@ -59,6 +51,7 @@ BEGIN
                     name           = excluded.name,
                     birth_date     = excluded.birth_date,
                     rank_id        = excluded.rank_id,
+                    is_deleted     = excluded.is_deleted,
                     ch_employee_id = excluded.ch_employee_id,
                     ch_dt          = excluded.ch_dt
             RETURNING e.*)
@@ -68,6 +61,7 @@ BEGIN
                                                  name,
                                                  birth_date,
                                                  rank_id,
+                                                 is_deleted,
                                                  ch_employee_id,
                                                  ch_dt)
            SELECT ic.employee_id,
@@ -75,6 +69,7 @@ BEGIN
                   ic.name,
                   ic.birth_date,
                   ic.rank_id,
+                  ic.is_deleted,
                   ic.ch_employee_id,
                   ic.ch_dt
            FROM ins_cte ic;

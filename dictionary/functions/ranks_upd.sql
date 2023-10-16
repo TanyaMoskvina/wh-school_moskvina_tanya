@@ -19,8 +19,8 @@ BEGIN
              LEFT JOIN dictionary.ranks r
                        ON r.rank_id = s.rank_id;
 
-    IF EXISTS(SELECT r.name FROM dictionary.ranks r WHERE r.name = _name)
-        AND _rank_id IS NULL
+    IF EXISTS(SELECT r.name FROM dictionary.ranks r
+              WHERE r.name = _name AND _rank_id IS NULL)
     THEN
         RETURN public.errmessage(_errcode := 'dictionary.ranks_upd.name_exists',
                                  _msg := 'Такая должность уже существует',
