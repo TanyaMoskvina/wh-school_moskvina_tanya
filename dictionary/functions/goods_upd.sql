@@ -3,38 +3,7 @@ CREATE OR REPLACE FUNCTION dictionary.goods_upd(_src JSONB) RETURNS JSONB
     LANGUAGE plpgsql
 AS
 $$
-DECLARE
-    _nm_id           BIGINT;
-    _name            VARCHAR(256);
-    _by_prescription BOOLEAN;
-    _dosage          VARCHAR(16);
-    _count_in_pack   SMALLINT;
-    _release_form_id SMALLINT;
-    _category_id     SMALLINT;
-    _manufacturer_id INT;
 BEGIN
-
-    SELECT COALESCE(g.nm_id, NEXTVAL('pharmacy.pharmacy_sq')) AS nm_id,
-           s.name,
-           s.by_prescription,
-           s.dosage,
-           s.count_in_pack,
-           s.release_form_id,
-           s.category_id,
-           s.manufacturer_id
-    INTO _nm_id, _name, _by_prescription, _dosage, _count_in_pack,
-         _release_form_id, _category_id, _manufacturer_id
-    FROM JSONB_TO_RECORD(_src) AS s (nm_id           BIGINT,
-                                     name            VARCHAR(256),
-                                     by_prescription BOOLEAN,
-                                     dosage          VARCHAR(16),
-                                     count_in_pack   SMALLINT,
-                                     release_form_id SMALLINT,
-                                     category_id     SMALLINT,
-                                     manufacturer_id INT)
-             LEFT JOIN dictionary.goods g
-                       ON g.nm_id = s.nm_id;
-
     INSERT INTO dictionary.goods AS g (nm_id,
                                        name,
                                        by_prescription,
@@ -43,14 +12,23 @@ BEGIN
                                        release_form_id,
                                        category_id,
                                        manufacturer_id)
-    SELECT _nm_id,
-           _name,
-           _by_prescription,
-           _dosage,
-           _count_in_pack,
-           _release_form_id,
-           _category_id,
-           _manufacturer_id
+    SELECT COALESCE(g.nm_id, NEXTVAL('pharmacy.pharmacy_sq')) AS nm_id,
+           s.name,
+           s.by_prescription,
+           s.dosage,
+           s.count_in_pack,
+           s.release_form_id,
+           s.category_id,
+           s.manufacturer_id
+    FROM JSONB_TO_RECORD(_src) AS s (nm_id           BIGINT,
+                                     name            VARCHAR(256),
+                                     by_prescription BOOLEAN,
+                                     dosage          VARCHAR(16),
+                                     count_in_pack   SMALLINT,
+                                     release_form_id SMALLINT,
+                                     category_id     SMALLINT,
+                                     manufacturer_id INT)
+             LEFT JOIN dictionary.goods g ON g.nm_id = s.nm_id
     ON CONFLICT (nm_id) DO UPDATE
         SET name            = excluded.name,
             by_prescription = excluded.by_prescription,
