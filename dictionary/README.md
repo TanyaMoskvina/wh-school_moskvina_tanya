@@ -105,3 +105,22 @@ SELECT dictionary.place_types_upd('{"name": "Стеллаж"}');
 ```jsonb
 {"data" : null}
 ```
+
+### Заполнение и обновление таблицы goods
+```sql
+SELECT dictionary.goods_upd('{
+                              "name": "Парацетамол",
+                              "by_prescription": false,
+                              "dosage": "500 мг",
+                              "count_in_pack": 30,
+                              "release_form_id": 1,
+                              "category_id": 3,
+                              "manufacturer_id": 1
+                              }');
+```
+При вводе существующего `nm_id` запись обновится.  
+При `nm_id` NULL добавится новая запись.  
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
