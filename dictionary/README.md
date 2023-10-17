@@ -43,3 +43,65 @@ SELECT dictionary.ranks_upd('
   ]
 }
 ```
+
+### Заполнение и обновление таблицы card_levels
+```sql
+SELECT dictionary.card_levels_upd('{
+                                      "level_id": 1,
+                                      "discount": 1,
+                                      "amount_spent": 10000
+                                    }');
+```
+При вводе существующего `level_id` запись обновится.  
+При `level_id` NULL добавится новая запись.  
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
+
+### Заполнение и обновление таблицы goods_category
+```sql
+SELECT dictionary.goods_category_upd('{"name": "Аллергия"}');
+```
+При вводе существующего `category_id` запись обновится.  
+При `category_id` NULL добавится новая запись.  
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
+
+### Заполнение и обновление таблицы release_forms
+```sql
+SELECT dictionary.release_forms_upd('{"name": "Капсулы"}');
+```
+При вводе существующего `release_form_id` запись обновится.  
+При `release_form_id` NULL добавится новая запись.  
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
+
+### Заполнение и обновление таблицы manufacturers
+```sql
+SELECT dictionary.manufacturers_upd('{
+                                      "name": "Фармстандарт-Лексредства",
+                                      "country": "Россия"
+                                     }');
+```
+При вводе существующего `manufacturer_id` запись обновится.  
+При `manufacturer_id` NULL добавится новая запись.  
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
+
+### Заполнение и обновление таблицы place_types
+```sql
+SELECT dictionary.place_types_upd('{"name": "Стеллаж"}');
+```
+При вводе существующего `place_type_id` запись обновится.  
+При `place_type_id` NULL добавится новая запись.  
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
