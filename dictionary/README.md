@@ -70,6 +70,38 @@ SELECT dictionary.goods_category_upd('{"name": "Аллергия"}');
 {"data" : null}
 ```
 
+### Получение всех категорий товаров из таблицы goods_category
+```sql
+SELECT dictionary.goods_category_getall()
+```
+Пример ответа:
+```jsonb
+{
+  "data": [
+    {
+      "name": "Аллергия",
+      "category_id": 1
+    },
+    {
+      "name": "Антибиотики",
+      "category_id": 2
+    },
+    {
+      "name": "Боль, температура",
+      "category_id": 3
+    },
+    {
+      "name": "Желудок, кишечник, печень",
+      "category_id": 4
+    },
+    {
+      "name": "Болезни крови",
+      "category_id": 5
+    }
+  ]
+}
+```
+
 ### Заполнение и обновление таблицы release_forms
 ```sql
 SELECT dictionary.release_forms_upd('{"name": "Капсулы"}');
@@ -79,6 +111,34 @@ SELECT dictionary.release_forms_upd('{"name": "Капсулы"}');
 Пример ответа при правильном выполнении:
 ```jsonb
 {"data" : null}
+```
+
+### Получение всех форм реализации из таблицы release_forms
+```sql
+SELECT dictionary.release_form_getall();
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{
+  "data": [
+    {
+      "name": "Таблетки",
+      "release_form_id": 1
+    },
+    {
+      "name": "Капсулы",
+      "release_form_id": 2
+    },
+    {
+      "name": "Гель",
+      "release_form_id": 3
+    },
+    {
+      "name": "Капли",
+      "release_form_id": 4
+    }
+  ]
+}
 ```
 
 ### Заполнение и обновление таблицы manufacturers
@@ -95,6 +155,33 @@ SELECT dictionary.manufacturers_upd('{
 {"data" : null}
 ```
 
+###
+```sql
+SELECT dictionary.manufacturers_getall();
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{
+  "data": [
+    {
+      "name": "Фармстандарт-Лексредства",
+      "country": "Россия",
+      "manufacturer_id": 1
+    },
+    {
+      "name": "Рекитт Бенкизер Хелскэр Интернешнл Лтд",
+      "country": "Великобритания",
+      "manufacturer_id": 2
+    },
+    {
+      "name": "Тева Фармасьютикал Воркс Прайвэт Лимитед Компани",
+      "country": "Венгрия",
+      "manufacturer_id": 3
+    }
+  ]
+}
+```
+
 ### Заполнение и обновление таблицы place_types
 ```sql
 SELECT dictionary.place_types_upd('{"name": "Стеллаж"}');
@@ -104,6 +191,38 @@ SELECT dictionary.place_types_upd('{"name": "Стеллаж"}');
 Пример ответа при правильном выполнении:
 ```jsonb
 {"data" : null}
+```
+
+### Получение всех типов мест хранения
+```sql
+SELECT dictionary.release_form_getall();
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{
+  "data": [
+    {
+      "name": "Склад",
+      "place_type_id": 1
+    },
+    {
+      "name": "Холл",
+      "place_type_id": 2
+    },
+    {
+      "name": "Стеллаж",
+      "place_type_id": 3
+    },
+    {
+      "name": "Полка",
+      "place_type_id": 4
+    },
+    {
+      "name": "Секция",
+      "place_type_id": 5
+    }
+  ]
+}
 ```
 
 ### Заполнение и обновление таблицы goods
