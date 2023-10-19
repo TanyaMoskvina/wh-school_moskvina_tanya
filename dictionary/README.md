@@ -124,3 +124,44 @@ SELECT dictionary.goods_upd('{
 ```jsonb
 {"data" : null}
 ```
+
+### Заполнение и обновление таблицы suppliers
+```sql
+SELECT dictionary.suppliers_upd('
+                                 {
+                                   "name": "PharmaGo",
+                                   "inn": "4267742265",
+                                   "is_active": true
+                                 }
+                                 ', 15)
+```
+При вводе существующего `supplier_id` запись обновится.  
+При `supplier_id` NULL добавится новая запись.  
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
+
+### Получение всех поставщиков 
+```sql
+SELECT dictionary.suppliers_getall();
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{
+  "data": [
+    {
+      "inn": "806640748686",
+      "name": "ИП Кобяков Г.А.",
+      "is_active": false,
+      "supplier_id": 17
+    },
+    {
+      "inn": "4267742265",
+      "name": "PharmaGo",
+      "is_active": true,
+      "supplier_id": 18
+    }
+  ]
+}
+```
