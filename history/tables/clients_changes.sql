@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS history.clients_changes
     ch_dt          TIMESTAMPTZ NOT NULL
 ) PARTITION BY RANGE (ch_dt);
 
-CREATE INDEX IF NOT EXISTS idx_log_id ON history.clients_changes (log_id);
-CREATE INDEX IF NOT EXISTS inx_ch_dt ON history.clients_changes (ch_dt);
+CREATE INDEX IF NOT EXISTS ix_clients_changes_log_id ON history.clients_changes (log_id);
+CREATE INDEX IF NOT EXISTS ix_clients_changes_ch_dt ON history.clients_changes (ch_dt);
 
 CREATE TABLE IF NOT EXISTS  history.clients_changes_y2023m10 PARTITION OF history.clients_changes
     FOR VALUES FROM ('2023-10-01') TO ('2023-11-01');
