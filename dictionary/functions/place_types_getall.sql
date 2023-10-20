@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION dictionary.release_form_getall() RETURNS JSONB
+CREATE OR REPLACE FUNCTION dictionary.place_types_getall() RETURNS JSONB
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
