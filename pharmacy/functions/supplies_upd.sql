@@ -15,7 +15,7 @@ BEGIN
                                             is_accepted,
                                             ch_employee_id,
                                             ch_dt)
-            SELECT COALESCE(s1.supply_id, NEXTVAL('pharmacy.pharmacy_sq')),
+            SELECT COALESCE(j.supply_id, NEXTVAL('pharmacy.pharmacy_sq')) AS supply_id,
                    j.nm_id,
                    j.quantity,
                    j.supplier_id,
@@ -29,7 +29,6 @@ BEGIN
                                              supplier_id BIGINT,
                                              dt          TIMESTAMPTZ,
                                              is_accepted BOOLEAN)
-                     LEFT JOIN pharmacy.supplies s1 ON j.supply_id = s1.supply_id
             ON CONFLICT (supply_id, nm_id) DO UPDATE
                 SET quantity       = s.quantity + excluded.quantity,
                     supplier_id    = excluded.supplier_id,
