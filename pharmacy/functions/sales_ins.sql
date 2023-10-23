@@ -32,27 +32,6 @@ BEGIN
                                          responsible_employee_id BIGINT)
         RETURNING s.*)
 
-/*    , ins_his AS (
-        INSERT INTO history.sales_changes AS sc (sale_id,
-                                                 client_id,
-                                                 is_delivery,
-                                                 delivery_info,
-                                                 status,
-                                                 dt,
-                                                 responsible_employee_id,
-                                                 ch_employee_id,
-                                                 ch_dt)
-        SELECT ic.sale_id,
-               ic.client_id,
-               ic.is_delivery,
-               ic.delivery_info,
-               ic.status,
-               ic.dt,
-               ic.responsible_employee_id,
-               ic.ch_employee_id,
-               ic.ch_dt
-        FROM ins_cte ic)*/
-
     , goods AS (
         SELECT ic.sale_id,
                g.nm_id,
