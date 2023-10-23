@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION humanresource.clients_upd(_src JSONB, _ch_employee_id INT) RETURNS JSONB
+CREATE OR REPLACE FUNCTION humanresource.clients_upd(_src JSONB, _ch_employee_id BIGINT) RETURNS JSONB
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -8,8 +8,9 @@ DECLARE
     _phone          VARCHAR(11);
     _name           VARCHAR(64);
     _birth_date     DATE;
-    _dt             TIMESTAMPTZ := NOW() AT TIME ZONE 'Europe/Moscow';
-    _start_level_id SMALLINT    := 1;
+    _dt             TIMESTAMPTZ    := NOW() AT TIME ZONE 'Europe/Moscow';
+    _start_level_id SMALLINT       := 1;
+    _amount_spend   NUMERIC(10, 2) := 0;
 BEGIN
 
     SELECT COALESCE(c.client_id, NEXTVAL('humanresource.humanresource_sq')) AS client_id,
@@ -49,11 +50,13 @@ BEGIN
         INSERT INTO humanresource.clients_card AS ccr (card_id,
                                                        client_id,
                                                        level_id,
+                                                       amount_spent,
                                                        ch_employee_id,
                                                        ch_dt)
             SELECT NEXTVAL('humanresource.humanresource_sq') AS card_id,
                    ic.client_id,
                    _start_level_id                           AS level_id,
+                   _amount_spend                             AS amount_spent,
                    ic.ch_employee_id,
                    ic.ch_dt
             FROM ins_cte ic
@@ -77,4 +80,3 @@ BEGIN
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END
 $$;
-

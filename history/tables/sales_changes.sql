@@ -1,7 +1,8 @@
-CREATE TABLE IF NOT EXISTS pharmacy.sales
+CREATE TABLE IF NOT EXISTS history.sales_changes
 (
-    sale_id                 BIGINT      NOT NULL
-        CONSTRAINT pk_sales PRIMARY KEY,
+    log_id                  BIGSERIAL   NOT NULL
+        CONSTRAINT pk_sales_changes PRIMARY KEY,
+    sale_id                 BIGINT      NOT NULL,
     client_id               BIGINT      NULL,
     is_delivery             BOOLEAN     NOT NULL,
     delivery_info           JSONB       NULL,

@@ -14,6 +14,7 @@
 7. `suppliers` - поставщики
 8. `goods`    - таблица товаров
     * `by_prescription = TRUE ` - отпускается по рецепту, возможен только самомывоз
+    * `dosage = NULL` у нелекарственных товаров
 
 ## Функции
 
@@ -202,24 +203,20 @@ SELECT dictionary.release_form_getall();
 {
   "data": [
     {
-      "name": "Склад",
-      "place_type_id": 1
-    },
-    {
-      "name": "Холл",
-      "place_type_id": 2
-    },
-    {
-      "name": "Стеллаж",
-      "place_type_id": 3
-    },
-    {
-      "name": "Полка",
+      "name": "Секция",
       "place_type_id": 4
     },
     {
-      "name": "Секция",
-      "place_type_id": 5
+      "name": "Полка",
+      "place_type_id": 3
+    },
+    {
+      "name": "Помещение",
+      "place_type_id": 1
+    },
+    {
+      "name": "Стеллаж",
+      "place_type_id": 2
     }
   ]
 }
@@ -242,6 +239,85 @@ SELECT dictionary.goods_upd('{
 Пример ответа при правильном выполнении:
 ```jsonb
 {"data" : null}
+```
+
+### Получение всей информации о товарах/товаре
+При вызове функции с указанным параметром `nm_id` выведется вся информация об этом товаре
+```sql
+SELECT dictionary.goods_getinfo(30);
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{
+  "data": [
+    {
+      "name": "Нурофен Экспресс Форте",
+      "nm_id": 30,
+      "price": 650,
+      "dosage": "400 мг",
+      "category": "Боль, температура",
+      "manufacturer": "Рекитт Бенкизер Хелскэр Интернешнл Лтд",
+      "release_form": "Капсулы",
+      "count_in_pack": 30,
+      "by_prescription": false
+    }
+  ]
+}
+```
+При вызове функции без параметров выведется информация обо всех товарах
+```sql
+SELECT dictionary.goods_getinfo();
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{
+  "data": [
+    {
+      "name": "Парацетамол",
+      "nm_id": 26,
+      "price": 40,
+      "dosage": "500 мг",
+      "category": "Боль, температура",
+      "manufacturer": "Фармстандарт-Лексредства",
+      "release_form": "Таблетки",
+      "count_in_pack": 30,
+      "by_prescription": false
+    },
+    {
+      "name": "Нурофен Экспресс Форте",
+      "nm_id": 27,
+      "price": 233,
+      "dosage": "400 мг",
+      "category": "Боль, температура",
+      "manufacturer": "Рекитт Бенкизер Хелскэр Интернешнл Лтд",
+      "release_form": "Капсулы",
+      "count_in_pack": 10,
+      "by_prescription": false
+    },
+    {
+      "name": "Кветиапин",
+      "nm_id": 32,
+      "price": 840,
+      "dosage": "200 мг",
+      "category": "Неврология, психиатрия",
+      "manufacturer": "Северная Звезда НАО",
+      "release_form": "Таблетки покрытые оболочкой",
+      "count_in_pack": 60,
+      "by_prescription": true
+    },
+    {
+      "name": "Тонометр B.Well PRO-35 с адаптером",
+      "nm_id": 35,
+      "price": 2590,
+      "dosage": null,
+      "category": "Медтехника",
+      "manufacturer": "Б.Велл",
+      "release_form": "Другое",
+      "count_in_pack": 1,
+      "by_prescription": false
+    }
+  ]
+}
 ```
 
 ### Заполнение и обновление таблицы suppliers
