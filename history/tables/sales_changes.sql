@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS history.sales_changes
         CONSTRAINT pk_sales_changes PRIMARY KEY,
     sale_id                 BIGINT      NOT NULL,
     client_id               BIGINT      NULL,
---     sale_info               JSONB       NOT NULL,
     is_delivery             BOOLEAN     NOT NULL,
     delivery_info           JSONB       NULL,
     status                  CHAR(3)     NOT NULL,

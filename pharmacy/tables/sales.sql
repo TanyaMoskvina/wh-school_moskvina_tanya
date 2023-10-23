@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS pharmacy.sales
     sale_id                 BIGINT      NOT NULL
         CONSTRAINT pk_sales PRIMARY KEY,
     client_id               BIGINT      NULL,
---     sale_info               JSONB       NOT NULL,
     is_delivery             BOOLEAN     NOT NULL,
     delivery_info           JSONB       NULL,
     status                  CHAR(3)     NOT NULL,
