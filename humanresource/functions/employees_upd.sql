@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION humanresource.employees_upd(_src JSONB, _ch_employee_id INT) RETURNS JSONB
+CREATE OR REPLACE FUNCTION humanresource.employees_upd(_src JSONB, _ch_employee_id BIGINT) RETURNS JSONB
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -77,4 +77,3 @@ BEGIN
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END
 $$;
-

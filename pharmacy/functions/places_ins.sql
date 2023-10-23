@@ -27,8 +27,8 @@ BEGIN
     IF _count = (SELECT p.max_children FROM pharmacy.places p WHERE p.place_id = _parent_place_id)
     THEN
         RETURN public.errmessage(_errcode := 'pharmacy.places_ins.place.there_is_no_place',
-                                 _msg     := CONCAT('place_id = ', _parent_place_id, ' уже заполнено'),
-                                 _detail  := NULL);
+                                 _msg     := CONCAT('Это место уже заполнено'),
+                                 _detail  := CONCAT('place_id = ', _parent_place_id, ', max_children = ', _count));
     END IF;
 
     INSERT INTO pharmacy.places AS p (place_id,

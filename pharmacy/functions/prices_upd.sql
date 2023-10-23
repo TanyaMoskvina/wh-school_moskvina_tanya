@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION pharmacy.prices_upd(_src JSONB, _ch_employee_id INT) RETURNS JSONB
+CREATE OR REPLACE FUNCTION pharmacy.prices_upd(_src JSONB, _ch_employee_id BIGINT) RETURNS JSONB
     SECURITY DEFINER
     LANGUAGE plpgsql
 AS
@@ -19,9 +19,9 @@ BEGIN
             FROM JSONB_TO_RECORD(_src) AS s (nm_id BIGINT,
                                              price NUMERIC(10, 2))
             ON CONFLICT (nm_id) DO UPDATE
-                SET price = excluded.price,
+                SET price          = excluded.price,
                     ch_employee_id = excluded.ch_employee_id,
-                    ch_dt = excluded.ch_dt
+                    ch_dt          = excluded.ch_dt
             RETURNING p.*)
 
        , ins_his AS (
@@ -49,4 +49,3 @@ BEGIN
     RETURN JSONB_BUILD_OBJECT('data', NULL);
 END
 $$;
-
