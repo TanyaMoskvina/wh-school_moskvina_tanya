@@ -4,7 +4,7 @@
 ## Таблицы
 
 
-1. [`goods_on_place`](#раскладывание-по-местам-хранения) - таблица с местами хранения товаров и их количеством 
+1. `goods_on_place` - таблица с местами хранения товаров и их количеством 
 2. `places`   - таблица содержит места хранения  
     - `parent_place_id` - id родительского места хранения.  
      У `place_type_id = 1` (помещение) NULL.  
@@ -17,21 +17,6 @@
 3. `prices`   - таблица актуальных цен
 4. `sales`    - таблица продаж
    - `client_id` - если `is_delivery = TRUE` должен быть заполнен
-   - `goods` - содержит проданные/заказанные товары и их количество  
-   ```json
-   {
-     "goods": [
-       {
-         "nm_id": 1,
-         "quantity": 1
-       },
-       {
-         "nm_id": 2,
-         "quantity": 3
-       }
-     ]
-   }
-   ```
    - `is_delivery` TRUE - доставка, FALSE - самовывоз/оффлайн покупка
    - `delivery_info` JSONB  
    если `is_delivery = TRUE`, должен содержать адресс доставки, может также содержать комментарий клиента
@@ -52,6 +37,7 @@
       * `DEL` - delivery - в доставке
       * `COM` - completed - доставлен/получен  
      продажа через кассу - сразу статус `COM`  
+   - `dt` - дата формирования заказа / оффлайн продажи
      
 
 5. `sale_items` - таблица с товарами продажи и итоговой стоимостью
@@ -126,6 +112,9 @@ SELECT pharmacy.places_ins('{
 ```
 
 ### Раскладывание по местам хранения
+Сначала необходимо вызвать ф-цию `pharmacy.goods_on_place_get(nm_id)` чтобы узнать где лежит такой товар   
+Если хотим добавить товар - вызвать ф-цию `pharmacy.places_get_by_id(place_id)`, чтобы проверить наличие свободного места
+
 Если товар забираем из места хранения `"is_taken": true`, если кладем - `"is_taken": false`.
 ```sql
 SELECT pharmacy.goods_on_place_upd('{
@@ -181,7 +170,7 @@ SELECT pharmacy.goods_on_place_get();
   ]
 }
 ```
-При вызове функции с указанием `nm_id` выводится информация только об этом товаре 
+При вызове функции с указанием `nm_id` выводится информация о месте хранения только этого товара
 ```sql
 SELECT pharmacy.goods_on_place_get(26);
 ```
@@ -245,5 +234,178 @@ SELECT pharmacy.supply_orders_ins('{
 {"data" : null}
 ```
 
+### Приемка поставки
+`"is_accepted": false` - если поставка еще в процессе приемки
+`"is_accepted": true` - если поставка принята (добавляется последний товар поставки)   
+```sql
+SELECT pharmacy.supplies_upd('{
+                                  "supply_id": 40,
+                                  "nm_id": 32,
+                                  "quantity": 1,
+                                  "supplier_id": 18,
+                                  "dt": "2023-10-22 20:30:46.253701 +03:00",
+                                  "is_accepted": true
+                             }', 15);
+```
+При `supply_id` NULL добавится новая запись.  
+При вводе существующего `supply_id` запись о поставке обновится.  
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
+
+### Получение информации о поставках
+При вызове функции без параметров выводится информация о всех поставках
+```sql
+SELECT pharmacy.supplies_get();
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{
+  "data": [
+    {
+      "dt": "2023-10-22T17:30:46.253701+00:00",
+      "ch_dt": "2023-10-22T23:55:10.670952+00:00",
+      "nm_id": 34,
+      "quantity": 8,
+      "supply_id": 41,
+      "is_accepted": false,
+      "supplier_id": 18,
+      "ch_employee_id": 15
+    },
+    {
+      "dt": "2023-10-22T17:30:46.253701+00:00",
+      "ch_dt": "2023-10-22T23:55:34.91766+00:00",
+      "nm_id": 31,
+      "quantity": 1,
+      "supply_id": 41,
+      "is_accepted": false,
+      "supplier_id": 18,
+      "ch_employee_id": 15
+    },
+    {
+      "dt": "2023-10-22T17:30:46.253701+00:00",
+      "ch_dt": "2023-10-23T19:43:50.614778+00:00",
+      "nm_id": 32,
+      "quantity": 3,
+      "supply_id": 40,
+      "is_accepted": true,
+      "supplier_id": 18,
+      "ch_employee_id": 15
+    },
+    {
+      "dt": "2023-10-22T17:30:46.253701+00:00",
+      "ch_dt": "2023-10-22T23:33:14.266201+00:00",
+      "nm_id": 35,
+      "quantity": 3,
+      "supply_id": 40,
+      "is_accepted": true,
+      "supplier_id": 18,
+      "ch_employee_id": 15
+    }
+  ]
+}
+```
+При вызове функции с указанием `supply_id` выводится информация только об этой поставке
+```sql
+SELECT pharmacy.supplies_get(40);
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{
+  "data": [
+    {
+      "dt": "2023-10-22T17:30:46.253701+00:00",
+      "ch_dt": "2023-10-22T23:33:14.266201+00:00",
+      "nm_id": 35,
+      "quantity": 3,
+      "supply_id": 40,
+      "is_accepted": true,
+      "supplier_id": 18,
+      "ch_employee_id": 15
+    },
+    {
+      "dt": "2023-10-22T17:30:46.253701+00:00",
+      "ch_dt": "2023-10-23T19:43:50.614778+00:00",
+      "nm_id": 32,
+      "quantity": 3,
+      "supply_id": 40,
+      "is_accepted": true,
+      "supplier_id": 18,
+      "ch_employee_id": 15
+    }
+  ]
+}
+```
+
 ### Создание продажи/заказа
+Создается запись о продаже на кассе или об оформленном заказе.
+Статус заказа меняется с помощью ф-ции `pharmacy.sales_upd()`
+
+Продажа на кассе:  
+`is_delivery` - false, `status` - "COM", `client_id` может быть NULL
+```sql
+SELECT pharmacy.sales_ins('{
+                                "client_id": 24,
+                                "is_delivery": false,
+                                "status": "COM",
+                                "responsible_employee_id": 15
+                            }',
+                            '[{
+                                "nm_id": 27,
+                                "quantity": 1
+                            },
+                            {
+                                "nm_id": 31,
+                                "quantity": 1
+                            }]', 15)
+```
+Создание заказа:  
+`is_delivery` - true, `delivery_info` - jsonb,   
+`status` - "EXP", `client_id` должен быть заполнен
+```sql
+SELECT pharmacy.sales_ins('{
+                                "client_id": 24,
+                                "is_delivery": true,
+                                "delivery_info": {
+                                                   "address": "улица, дом, кв",
+                                                   "comment": "комментарий"
+                                                 },
+                                "status": "EXP",
+                                "responsible_employee_id": 15
+                            }',
+                            '[{
+                                "nm_id": 27,
+                                "quantity": 2
+                            },
+                            {
+                                "nm_id": 31,
+                                "quantity": 1
+                            }]', 15)
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
+
 ### Обновление статуса заказа
+После создания заказа, его нельзя изменить - меняется только статус.  
+Порядок изменения статуса: EXP -> INP -> RDY -> DEL -> COM
+```sql
+SELECT pharmacy.sales_upd('{
+                                "sale_id": 45,
+                                "client_id": 24,
+                                "is_delivery": true,
+                                "delivery_info": {
+                                                   "address": "улица, дом, кв",
+                                                   "comment": "комментарий"
+                                                 },
+                                "status": "INP",
+                                "dt":"2023-10-23 20:22:40.164127 +00:00",
+                                "responsible_employee_id": 15
+                            }', 15);
+```
+Пример ответа при правильном выполнении:
+```jsonb
+{"data" : null}
+```
